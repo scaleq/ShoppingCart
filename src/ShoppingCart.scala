@@ -2,13 +2,21 @@
   * Created by Alex on 27-Jan-17.
   */
 
-trait ShoppingCartItem
-case class Apple() extends ShoppingCartItem
-case class Orange() extends ShoppingCartItem
+sealed trait ShoppingCartItem{
+  val price: BigDecimal
+}
+case object Apple extends ShoppingCartItem {
+  val price = BigDecimal(0.60)
+}
+case object Orange extends ShoppingCartItem{
+  val price = BigDecimal(0.25)
+}
 
-object ShoppingCart {
-  def checkout(items: List[ShoppingCartItem]) : Double = items.map {
-    case Apple() => 0.60
-    case Orange() => 0.25
-  }.sum
+case class ShoppingCart(items: List[ShoppingCartItem]) {
+    def checkout(discounts : List[Discount] = Nil) : BigDecimal = {
+      val totalCost = items.map{ _.price }.sum
+      val totalDiscount = discounts.map { _(this) }.sum
+
+      totalCost - totalDiscount
+  }
 }
