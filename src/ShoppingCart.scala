@@ -25,4 +25,6 @@ case class ShoppingCart(items: List[ShoppingCartItem]) {
 
       totalCost - totalDiscount
   }
+
+  def AddItem(item: ShoppingCartItem) = ShoppingCart(item::items)
 }

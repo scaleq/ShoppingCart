@@ -101,4 +101,22 @@ class ShoppingCartTests  extends FunSuite {
   test("A shopping cart with five melons and offer 'Three for the price of two on Melons' should return 4.00 at checkout") {
     assert(ShoppingCart(Melon::Melon::Melon::Melon::Melon::Nil).checkout(ThreeForThePriceOfTwoMelonDiscount::Nil) == 4.00)
   }
+
+  /* Step 5 */
+
+  test("A shopping cart with three apples, four oranges and five melons with all discounts applied should return 5.95 at checkout"){
+    val discounts = BuyOneGetOneFreeAppleAndBananaDiscount::ThreeForThePriceOfTwoOrangeDiscount::ThreeForThePriceOfTwoMelonDiscount::Nil
+    val shoppingCart = ShoppingCart(Apple::Apple::Apple::Orange::Orange::Orange::Orange::Melon::Melon::Melon::Melon::Nil)
+
+    assert(shoppingCart.AddItem(Melon).checkout(discounts) == 5.95)
+  }
+
+  test("A shopping cart with an apple, two bananas, three oranges and four melons with all discounts applied should return 4.30 at checkout"){
+    val discounts = BuyOneGetOneFreeAppleAndBananaDiscount::ThreeForThePriceOfTwoOrangeDiscount::ThreeForThePriceOfTwoMelonDiscount::Nil
+    val shoppingCart = ShoppingCart(Apple::Banana::Banana::Orange::Orange::Orange::Melon::Melon::Melon::Nil)
+
+    assert(shoppingCart.AddItem(Melon).checkout(discounts) == 4.30)
+  }
+
+  // What if an item is included in more that one offers?
 }
