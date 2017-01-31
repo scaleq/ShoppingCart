@@ -11,6 +11,9 @@ case object Apple extends ShoppingCartItem {
 case object Orange extends ShoppingCartItem{
   val price = BigDecimal(0.25)
 }
+case object Banana extends ShoppingCartItem{
+  val price = BigDecimal(0.20)
+}
 
 case class ShoppingCart(items: List[ShoppingCartItem]) {
     def checkout(discounts : List[Discount] = Nil) : BigDecimal = {

@@ -52,4 +52,29 @@ class ShoppingCartTests  extends FunSuite {
     assert(ShoppingCart(Orange::Orange::Orange::Orange::Orange::Orange::Nil).checkout(ThreeForThePriceOfTwoOrangeDiscount::Nil) == 1.00)
   }
 
+  /* Step 3 */
+
+  test("A shopping cart with a banana should return 0.20 at checkout") {
+    assert(ShoppingCart(Banana::Nil).checkout() == 0.20)
+  }
+
+  test("A shopping cart with two bananas and offer 'Buy one get one free on Apples & Bananas' should return 0.20 at checkout") {
+    assert(ShoppingCart(Banana::Banana::Nil).checkout(BuyOneGetOneFreeAppleAndBananaDiscount::Nil) == 0.20)
+  }
+
+  test("A shopping cart with an apple and banana and offer 'Buy one get one free on Apples & Bananas' should return 0.60 at checkout") {
+    assert(ShoppingCart(Banana::Apple::Nil).checkout(BuyOneGetOneFreeAppleAndBananaDiscount::Nil) == 0.60)
+  }
+
+  test("A shopping cart with two apples and offer 'Buy one get one free on Apples & Bananas' should return 0.60 at checkout") {
+    assert(ShoppingCart(Apple::Apple::Nil).checkout(BuyOneGetOneFreeAppleAndBananaDiscount::Nil) == 0.60)
+  }
+
+  test("A shopping cart with two apples and a banana and offer 'Buy one get one free on Apples & Bananas' should return 0.60 at checkout") {
+    assert(ShoppingCart(Banana::Apple::Apple::Nil).checkout(BuyOneGetOneFreeAppleAndBananaDiscount::Nil) == 1.20)
+  }
+
+  test("A shopping cart with two bananas and an apple and offer 'Buy one get one free on Apples & Bananas' should return 0.60 at checkout") {
+    assert(ShoppingCart(Banana::Banana::Apple::Nil).checkout(BuyOneGetOneFreeAppleAndBananaDiscount::Nil) == 0.80)
+  }
 }
