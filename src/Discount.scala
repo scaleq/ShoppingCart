@@ -17,15 +17,22 @@ object ThreeForThePriceOfTwoOrangeDiscount extends Discount {
   }
 }
 
-
 object BuyOneGetOneFreeAppleAndBananaDiscount extends Discount {
-  def apply(shoppingCart: ShoppingCart) : BigDecimal = {
+  def apply(shoppingCart: ShoppingCart): BigDecimal = {
 
     val appleAndBananaPrices = shoppingCart.items.collect {
-      case item @ Apple => item.price
-      case item @ Banana => item.price
+      case item@Apple => item.price
+      case item@Banana => item.price
     }
 
     appleAndBananaPrices.sorted.take(appleAndBananaPrices.length / 2).sum
   }
 }
+
+  object ThreeForThePriceOfTwoMelonDiscount extends Discount {
+    def apply(shoppingCart: ShoppingCart): BigDecimal = {
+      val orangeItems = shoppingCart.items.collect { case item@Melon => item }
+      (orangeItems.length / 3) * Melon.price
+    }
+  }
+
