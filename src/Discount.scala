@@ -1,21 +1,21 @@
 /**
   * Created by Alex on 30-Jan-17.
   */
+
+import scala.reflect.ClassTag
+
 trait Discount extends (ShoppingCart => BigDecimal)
 
-object BuyOneGetOneFreeAppleDiscount extends Discount {
+class GeneralDiscount[T <: ShoppingCartItem : ClassTag](itemsInDiscount: Int) extends  Discount {
   def apply(shoppingCart: ShoppingCart) : BigDecimal = {
-    val appleItems = shoppingCart.items.collect { case item@Apple => item }
-    (appleItems.length / 2) * Apple.price
+    val prices = shoppingCart.items.collect { case item : T => item.price }
+    prices.take(prices.length / itemsInDiscount).sum
   }
 }
 
-object ThreeForThePriceOfTwoOrangeDiscount extends Discount {
-  def apply(shoppingCart: ShoppingCart) : BigDecimal = {
-    val orangeItems = shoppingCart.items.collect { case item @ Orange => item }
-    (orangeItems.length / 3) * Orange.price
-  }
-}
+object BuyOneGetOneFreeAppleDiscount extends GeneralDiscount[Apple.type](itemsInDiscount = 2)
+object ThreeForThePriceOfTwoOrangeDiscount extends GeneralDiscount[Orange.type](itemsInDiscount = 3)
+object ThreeForThePriceOfTwoMelonDiscount extends GeneralDiscount[Melon.type](itemsInDiscount = 3)
 
 object BuyOneGetOneFreeAppleAndBananaDiscount extends Discount {
   def apply(shoppingCart: ShoppingCart): BigDecimal = {
@@ -28,11 +28,4 @@ object BuyOneGetOneFreeAppleAndBananaDiscount extends Discount {
     appleAndBananaPrices.sorted.take(appleAndBananaPrices.length / 2).sum
   }
 }
-
-  object ThreeForThePriceOfTwoMelonDiscount extends Discount {
-    def apply(shoppingCart: ShoppingCart): BigDecimal = {
-      val orangeItems = shoppingCart.items.collect { case item@Melon => item }
-      (orangeItems.length / 3) * Melon.price
-    }
-  }
 
